@@ -44,13 +44,6 @@
     </url>
 
     <url>
-        <loc>https://auphone.net/tags/Tools/</loc>
-        <lastmod>2019-11-18T06:12:16.941Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
         <loc>https://auphone.net/tags/CSS/</loc>
         <lastmod>2019-11-19T03:10:28.854Z</lastmod>
         <changefreq>weekly</changefreq>
@@ -87,28 +80,35 @@
 
     <url>
         <loc>https://auphone.net/tags/Word-Wise/</loc>
-        <lastmod>2020-01-10T06:59:19.342Z</lastmod>
+        <lastmod>2020-01-10T07:26:48.912Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>https://auphone.net/tags/Tools/</loc>
+        <lastmod>2020-01-10T07:26:48.912Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>
 
     <url>
         <loc>https://auphone.net/tags/Twitch/</loc>
-        <lastmod>2020-01-10T07:17:56.693Z</lastmod>
+        <lastmod>2020-01-10T07:27:19.638Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>
 
     <url>
         <loc>https://auphone.net/tags/Extension/</loc>
-        <lastmod>2020-01-10T07:17:56.693Z</lastmod>
+        <lastmod>2020-01-10T07:27:19.638Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>
 
     <url>
         <loc>https://auphone.net/tags/Translation/</loc>
-        <lastmod>2020-01-10T07:17:56.693Z</lastmod>
+        <lastmod>2020-01-10T07:27:19.638Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>

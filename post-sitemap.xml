@@ -7,8 +7,16 @@
     </url>
 
     <url>
-        <loc>https://auphone.net/posts/%E5%88%A9%E7%94%A8Web-Speech-API%E7%B5%A6Twitch-tv%E5%8D%B3%E6%99%82%E8%A3%BD%E4%BD%9C%E5%AD%97%E5%B9%95/</loc>
-        <lastmod>2020-01-10T07:17:56.693Z</lastmod>
+        <loc>https://auphone.net/posts/%E7%94%A8Web-Speech-API%E7%B5%A6Twitch-tv%E5%AF%A6%E6%B3%81%E8%A3%BD%E4%BD%9C%E5%AD%97%E5%B9%95/</loc>
+        <lastmod>2020-01-10T07:27:19.638Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
+        <loc>https://auphone.net/posts/%E7%94%A8%E3%80%8C%E5%AD%97%E9%A0%BB%E6%95%B8%E6%93%9A%E3%80%8D%E5%88%86%E6%9E%90%E8%8B%B1%E6%96%87%E7%94%9F%E5%AD%97%E7%9A%84%E9%9B%A3%E6%98%93%E5%BA%A6/</loc>
+        <lastmod>2020-01-10T07:26:48.912Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>
 
@@ -16,7 +24,7 @@
 
     <url>
         <loc>https://auphone.net/posts/%E8%87%AA%E8%A3%BD%E3%80%8CChrome-%E7%89%88-Word-Wise%E3%80%8D%E6%99%BA%E8%83%BD%E7%BF%BB%E8%AD%AF%E8%8B%B1%E6%96%87%E7%94%9F%E5%AD%97/</loc>
-        <lastmod>2020-01-10T06:59:19.342Z</lastmod>
+        <lastmod>2020-01-10T07:26:11.472Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>
 
@@ -33,14 +41,6 @@
     <url>
         <loc>https://auphone.net/posts/%E8%BC%95%E9%87%8F%E7%89%88NodeJS-Express-TypeScript-Starter/</loc>
         <lastmod>2019-11-18T06:12:16.941Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.6</priority>
-
-    </url>
-
-    <url>
-        <loc>https://auphone.net/posts/%E7%94%A8%E3%80%8C%E5%AD%97%E9%A0%BB%E6%95%B8%E6%93%9A%E3%80%8D%E5%88%86%E6%9E%90%E8%8B%B1%E6%96%87%E7%94%9F%E5%AD%97%E7%9A%84%E9%9B%A3%E6%98%93%E5%BA%A6/</loc>
-        <lastmod>2019-11-18T06:12:16.931Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>
 
