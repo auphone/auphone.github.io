@@ -1,0 +1,88 @@
+<html><head><meta name="generator" content="Hexo 3.9.0"><title>用 Web Speech API 給 Twitch.tv 實況製作字幕&nbsp;-&nbsp;auphone.net</title><link rel="apple-touch-icon" sizes="57x57" href="/apple-icon-57x57.png"><link rel="apple-touch-icon" sizes="60x60" href="/apple-icon-60x60.png"><link rel="apple-touch-icon" sizes="72x72" href="/apple-icon-72x72.png"><link rel="apple-touch-icon" sizes="76x76" href="/apple-icon-76x76.png"><link rel="apple-touch-icon" sizes="114x114" href="/apple-icon-114x114.png"><link rel="apple-touch-icon" sizes="120x120" href="/apple-icon-120x120.png"><link rel="apple-touch-icon" sizes="144x144" href="/apple-icon-144x144.png"><link rel="apple-touch-icon" sizes="152x152" href="/apple-icon-152x152.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-icon-180x180.png"><link rel="icon" type="image/png" sizes="192x192" href="/android-icon-192x192.png"><link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png"><link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png"><link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="manifest" href="/manifest.json"><meta name="msapplication-TileColor" content="#ffffff"><meta name="msapplication-TileImage" content="/ms-icon-144x144.png"><meta name="theme-color" content="#ffffff"><meta charset="UTF8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="stylesheet" href="//fonts.googleapis.com/css?family=Noto+Sans+TC:400,700&display=swap"><link rel="stylesheet" href="/css/style.css"></head><body id="site"><div class="sidebar-wrap"><div class="sidebar"><div class="info"><a class="greetings" href="/"><h1>嗨,</h1><h2>我是Auphone</h2></a><div class="bio">揼Code尋生活<br>寫App為生存<br>學而時習之，不亦說乎？</div><div class="highlight">Happy Coding &lt;3</div><div class="social"><a href="https://github.com/auphone" target="_new"><i class="icon-github-circled"></i></a><a href="https://twitter.com/auphonehk" target="_new"><i class="icon-twitter-bird"></i></a></div></div><footer><div class="container"><a class="copy-right-text" href="/">ヾ(*ΦωΦ)ツ<br>© 2019 auphone.net</a><div id="sub"><form id="sub-form" action="https://auphone.us18.list-manage.com/subscribe/post?u=1b175b7b8039f63120af59b14&amp;id=f727c66d2f" method="post" target="_blank"><input id="sub-email" type="email" name="EMAIL" placeholder="電郵地址" required><button id="sub-btn" type="submit">訂閱</button></form></div></div></footer></div></div><div class="wrap"><div class="content"><link rel="stylesheet" href="/css/post.css"><script src="/js/highlight.pack.js"></script><div id="post"><article><p class="date">19年02月20日</p><h1 class="title">用 Web Speech API 給 Twitch.tv 實況製作字幕</h1><p></p><p>小弟沒甚麼語言天份，基本上除了廣東話以外都聽得很吃力，所以就<strong>做了這個瀏覽器插件在看 Twitch.tv 即時加入字幕</strong></p><h2 id="虛擬音效裝置-Virtual-Audio-Device"><a href="#虛擬音效裝置-Virtual-Audio-Device" class="headerlink" title="虛擬音效裝置 Virtual Audio Device"></a>虛擬音效裝置 Virtual Audio Device</h2><p>我會使用虛擬音效裝置<strong>把網頁的聲音輸出轉換成輸入裝置，把網頁的聲音變成麥克風輸入讓瀏覽器可以辨析得到</strong></p><img src="/posts/利用Web-Speech-API給Twitch-tv即時製作字幕/chrome-microphone.png" title="Chrome Microphone Popup"><p><strong>Windows 用家可以使用 <a href="https://www.vb-audio.com/Cable/" target="_blank" rel="noopener">vb-audio</a> 實現虛擬裝置</strong>，而 Linux 需要比較高的技術來去設定，我也是誤打誤撞才成功的，因為太麻煩了有機會再說吧</p><div class="splitter"><span><em>(:3 」∠ )</em></span></div><h2 id="免費的-Web-Speach-API"><a href="#免費的-Web-Speach-API" class="headerlink" title="免費的 Web Speach API"></a>免費的 Web Speach API</h2><p>做瀏覽器插件的好處是<strong>可以使用免費的 Web Speech API</strong>，而<strong>不用支付昂貴的 API 費用</strong>，例如 Google API，然而代價就是 API 的<strong>語音全部都會經過他們的伺服器</strong>，但又不是錄我的聲音所以沒關係吧</p><p>使用方法很簡單，只要幾句 code 就可以運行了</p><p></p><p class="code-caption" data-lang="js" data-line_number="frontend" data-trim_indent="backend" data-label_position="outer" data-labels_left="Code" data-labels_right=":" data-labels_copy="Copy Code"><span class="code-caption-label"></span><a class="code-caption-copy">Copy Code</a></p><p></p><pre><code class="js">const recognition = new webkitSpeechRecognition();
+
+recognition.lang = &#39;en-US&#39;;
+recognition.start();
+recognition.interimResults = false;
+
+recognition.onresult = event =&gt; {
+  const sentence = event.results[0][0].transcript;
+};
+</code></pre><p><code>interimResults</code> 預設是開啟的，效果是只要<strong>語音有小停頓也會即時回傳結果</strong>，像這樣</p><p></p><p class="code-caption" data-lang data-line_number="frontend" data-trim_indent="backend" data-label_position="outer" data-labels_left="Code" data-labels_right=":" data-labels_copy="Copy Code"><span class="code-caption-label"></span><a class="code-caption-copy">Copy Code</a></p><p></p><pre><code>Response 1: I
+Response 2: I go to school
+Response 3: I go to school by bus
+</code></pre><p>如果把它關閉，API 會盡量在句子完結時再回傳，這樣<strong>回傳的速度會比較慢但相對可讀性也會提高</strong></p><h2 id="用-jQuery-插入字幕"><a href="#用-jQuery-插入字幕" class="headerlink" title="用 jQuery 插入字幕"></a>用 jQuery 插入字幕</h2><p>接收到句子後便可以即時把它插入到影片內，使用 jQuery 的原因只是為了方便，本地插件就不考慮效能問題了，這邊我要<strong>先取得目標網站的影片 <code>container</code></strong>，以 Twitch 為例就是 <code>.video-player__container</code>，<strong>然後在裡面插入 <code>&lt;div id=&quot;my-subtitle-container&quot;&gt;&lt;/div&gt;</code> 為字幕預留空間</strong></p><p></p><p class="code-caption" data-lang="js" data-line_number="frontend" data-trim_indent="backend" data-label_position="outer" data-labels_left="Code" data-labels_right=":" data-labels_copy="Copy Code"><span class="code-caption-label"></span><a class="code-caption-copy">Copy Code</a></p><p></p><pre><code class="js">function getSubtitleContainer() {
+  let container = $(&#39;#my-subtitle-container&#39;);
+  const videoContainerEle = &#39;.video-player__container&#39;; // 這是 Twitch 的
+  const wrap = $(videoContainerEle);
+  if (container.length === 0) {
+    $(&#39;.video-player__container&#39;).append(
+      &#39;&lt;div id=&quot;my-subtitle-container&quot;&gt;&lt;/div&gt;&#39;
+    );
+    container = $(videoContainerEle);
+  }
+  return container;
+}
+</code></pre><p>從 API 接收到 event 的時候便更改 <code>container</code> 內的 html</p><p></p><p class="code-caption" data-lang="js" data-line_number="frontend" data-trim_indent="backend" data-label_position="outer" data-labels_left="Code" data-labels_right=":" data-labels_copy="Copy Code"><span class="code-caption-label"></span><a class="code-caption-copy">Copy Code</a></p><p></p><pre><code class="js">recognition.onresult = event =&gt; {
+  const sentence = event.results[0][0].transcript;
+  $(&#39;#my-subtitle-container&#39;).html(`&lt;p&gt;${sentence}&lt;/p&gt;`);
+};
+</code></pre><p>用簡單的 CSS 把字幕移到影片框架的底部正中</p><p></p><p class="code-caption" data-lang="css" data-line_number="frontend" data-trim_indent="backend" data-label_position="outer" data-labels_left="Code" data-labels_right=":" data-labels_copy="Copy Code"><span class="code-caption-label"></span><a class="code-caption-copy">Copy Code</a></p><p></p><pre><code class="css">#my-subtitle-container {
+  position: absolute;
+  bottom: 5%;
+  width: 100%;
+  text-align: center;
+}
+
+#my-subtitle-container p {
+  display: inline-block;
+  margin: 0 auto 2px auto;
+  font-family: &#39;微軟正黑體&#39;;
+  color: #000;
+  font-weight: bold;
+  background: rgba(255, 255, 255, 0.8);
+  padding-left: 5px;
+  padding-right: 5px;
+}
+</code></pre><h2 id="翻譯伺服器"><a href="#翻譯伺服器" class="headerlink" title="翻譯伺服器"></a>翻譯伺服器</h2><p><strong>中文以外的語音我會先進行翻譯再顯示，所以我們需要一個翻譯伺服器</strong>，在接收到句子時先進行翻譯，伺服器詳情可參考<a href="http://localhost:5000/posts/%E8%87%AA%E8%A3%BD%E3%80%8CChrome-%E7%89%88-Word-Wise%E3%80%8D%E6%99%BA%E8%83%BD%E7%BF%BB%E8%AD%AF%E8%8B%B1%E6%96%87%E7%94%9F%E5%AD%97/" target="_blank" rel="noopener">自製「Chrome 版 Word Wise」智能翻譯英文生字</a>，至於中文的直接顯示出來就好了</p><h2 id="提升字幕可讀性"><a href="#提升字幕可讀性" class="headerlink" title="提升字幕可讀性"></a>提升字幕可讀性</h2><p>因為我設定了 API 只會在句末的時候才回傳，所以<strong>字幕顯示延遲是一定有的，而且很容易被下一句字幕覆蓋掉</strong>，所以我做了一個<strong>堆疊字幕的效果，讓字幕能夠在屏幕逗留 5 秒鐘</strong></p><p></p><p class="code-caption" data-lang="js" data-line_number="frontend" data-trim_indent="backend" data-label_position="outer" data-labels_left="Code" data-labels_right=":" data-labels_copy="Copy Code"><span class="code-caption-label"></span><a class="code-caption-copy">Copy Code</a></p><p></p><pre><code class="js">class SubTitle {
+  timestamp: Moment;
+  text: string;
+
+  constructor(text: string) {
+    this.text = text;
+    this.timestamp = moment();
+  }
+}
+
+function render() {
+  const expired = subtitles.find(subtitle =&gt;
+    subtitle.timestamp.isBefore(moment().add(-5, &#39;seconds&#39;))
+  );
+  if (expired) {
+    subtitles.shift();
+  }
+  $(&#39;#my-subtitle-container&#39;).html(
+    subtitles.map(subtitle =&gt; `${subtitle.text}&lt;br/&gt;`).join()
+  );
+}
+
+const subtitles = [];
+
+recognition.onresult = event =&gt; {
+  const sentence = event.results[0][0].transcript;
+  subtitles.push(new SubTitle(sentence));
+  render();
+};
+
+setInterval(() =&gt; {
+  render();
+}, 1000);
+</code></pre><h2 id="防止-API-中斷"><a href="#防止-API-中斷" class="headerlink" title="防止 API 中斷"></a>防止 API 中斷</h2><p>這個 API 有一個很奇怪的特性，在 API <strong>回傳之後有一定機率會停止 <code>recognition</code></strong>，或許是我用的方法錯了，但我發現<strong>每次回傳後再 <code>start()</code> 一次基本上就不會再斷</strong>，所以就沒有考究了</p><p></p><p class="code-caption" data-lang="js" data-line_number="frontend" data-trim_indent="backend" data-label_position="outer" data-labels_left="Code" data-labels_right=":" data-labels_copy="Copy Code"><span class="code-caption-label"></span><a class="code-caption-copy">Copy Code</a></p><p></p><pre><code class="js">recognition.onresult = function(event) {
+  const sentence = event.results[0][0].transcript;
+  setTimeout(() =&gt; {
+    try {
+      recognition.start();
+    } catch (err) {}
+  });
+  ...
+}
+</code></pre><div class="splitter"><span>(ﾟ3ﾟ)～♪</span></div><p></p></article></div><button id="btnScrollTop" onclick="scrollToTop()"><i class="icon-up-big"></i></button><script>hljs.initHighlightingOnLoad()</script></div></div><footer><div class="container"><a class="copy-right-text" href="/">ヾ(*ΦωΦ)ツ<br>© 2019 auphone.net</a><div id="sub"><form id="sub-form" action="https://auphone.us18.list-manage.com/subscribe/post?u=1b175b7b8039f63120af59b14&amp;id=f727c66d2f" method="post" target="_blank"><input id="sub-email" type="email" name="EMAIL" placeholder="電郵地址" required><button id="sub-btn" type="submit">訂閱</button></form></div></div></footer><script src="/js/app.js"></script></body></html>

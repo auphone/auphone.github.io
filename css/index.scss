@@ -1,0 +1,43 @@
+#posts {
+  .article-wrap:last-child {
+    margin-bottom: 80px;
+  }
+  article {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    img {
+      border-radius: 50%;
+      min-width: 48px;
+      min-height: 48px;
+      max-width: 48px;
+      max-height: 48px;
+      margin-right: 20px;
+    }
+    div {
+      display: flex;
+      justify-content: center;
+      flex-direction: column;
+      small {
+        color: #aaa;
+        font-weight: bold;
+        display: block;
+        padding-bottom: 4px;
+      }
+      a {
+        display: block;
+        margin-bottom: 0;
+      }
+    }
+  }
+  h4 {
+    padding-top: 40px;
+    color: #000;
+  }
+}
+h2.page-title {
+  color: #aaa;
+}
+h3.page-end {
+  color: #ccc;
+}
