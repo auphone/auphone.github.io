@@ -1,0 +1,94 @@
+<html><head><title>Mailchimp API 自架伺服器實現 AJAX 請求&nbsp;-&nbsp;auphone.net</title><script async src="https://www.googletagmanager.com/gtag/js?id=UA-92978795-2"></script><script data-ad-client="ca-pub-1447883820552850" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script><script>function gtag(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],gtag("js",new Date),gtag("config","UA-92978795-2")</script><link rel="apple-touch-icon" sizes="57x57" href="/apple-icon-57x57.png"><link rel="apple-touch-icon" sizes="60x60" href="/apple-icon-60x60.png"><link rel="apple-touch-icon" sizes="72x72" href="/apple-icon-72x72.png"><link rel="apple-touch-icon" sizes="76x76" href="/apple-icon-76x76.png"><link rel="apple-touch-icon" sizes="114x114" href="/apple-icon-114x114.png"><link rel="apple-touch-icon" sizes="120x120" href="/apple-icon-120x120.png"><link rel="apple-touch-icon" sizes="144x144" href="/apple-icon-144x144.png"><link rel="apple-touch-icon" sizes="152x152" href="/apple-icon-152x152.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-icon-180x180.png"><link rel="icon" type="image/png" sizes="192x192" href="/android-icon-192x192.png"><link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png"><link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png"><link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="manifest" href="/manifest.json"><meta name="msapplication-TileColor" content="#ffffff"><meta name="msapplication-TileImage" content="/ms-icon-144x144.png"><meta name="theme-color" content="#ffffff"><meta charset="UTF8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="stylesheet" href="//fonts.googleapis.com/css?family=Noto+Sans+TC:400,700&display=swap.css"><link rel="stylesheet" href="/css/style.css"><meta name="generator" content="Hexo 4.2.1"></head><body id="site"><div class="sidebar-wrap"><div class="sidebar"><div class="info"><a class="greetings" href="/"><h1>嗨,</h1><h2>我是Auphone</h2></a><div class="bio">揼Code尋生活<br>寫App為生存<br>學而時習之，不亦說乎？</div><div class="highlight">Happy Coding &lt;3</div><div class="social"><a href="https://github.com/auphone" target="_new"><i class="icon-github-circled"></i></a><a href="https://twitter.com/auphonehk" target="_new"><i class="icon-twitter-bird"></i></a></div></div><footer><div class="container"><a class="copy-right-text" href="/">ヾ(*ΦωΦ)ツ<br>© 2022 auphone.net</a><div id="sub"><form id="sub-form" action="https://auphone.us18.list-manage.com/subscribe/post?u=1b175b7b8039f63120af59b14&amp;id=f727c66d2f" method="post" target="_blank"><input id="sub-email" type="email" name="EMAIL" placeholder="電郵地址" required><button id="sub-btn" type="submit">訂閱</button></form></div></div></footer></div></div><div class="wrap"><div class="content"><link rel="stylesheet" href="/css/post.css"><div id="post"><article><p class="date">18年11月07日</p><h1 class="title">Mailchimp API 自架伺服器實現 AJAX 請求</h1><p></p><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>本來我使用 <a href="https://mailchimp.com/" target="_blank" rel="noopener">MailChimp</a> 這類 email marketing 服務是想<strong>避免自架伺服器</strong>好讓我能省一點錢，可惜它跟大部份公司的做法都是要 redirect 到其他頁面再填寫表格的（以安全性和防 spamming 的角度我是能理解啦），想要一個<strong>簡簡單單輸入個 email 就能訂閱</strong>的表格其實不太簡單！</p><img src="/posts/Mailchimp-API-%E8%87%AA%E6%9E%B6%E4%BC%BA%E6%9C%8D%E5%99%A8%E5%AF%A6%E7%8F%BEAJAX%E8%AB%8B%E6%B1%82/subscription-form.png" title="auphone.net subscription form"><h2 id="用-MailChimp-做免費仔"><a href="#用-MailChimp-做免費仔" class="headerlink" title="用 MailChimp 做免費仔"></a>用 MailChimp 做免費仔</h2><img src="/posts/Mailchimp-API-%E8%87%AA%E6%9E%B6%E4%BC%BA%E6%9C%8D%E5%99%A8%E5%AF%A6%E7%8F%BEAJAX%E8%AB%8B%E6%B1%82/mailchimp.png" title="MailChimp Logo"><p>MailChimp 本來就有免費的計劃，而且它的免費用量<strong>足夠給一些剛起步的網站</strong>，界面用起來也不錯，這裡說一下另一家叫 MailJet 的基本上付合我的要求而且不用設伺服器，但因為界面太糟糕而且各種奇怪設定問題所以決定不採用…</p><h2 id="事前準備"><a href="#事前準備" class="headerlink" title="事前準備"></a>事前準備</h2><ul><li>一個 MailChimp 帳戶</li><li>一張 Contact List</li><li>一條 MailChimp API Key</li><li>一點 Node.js 的知識</li><li>一部伺服器（我的是 Raspberry Pi 3）</li></ul><h3 id="取得-API-Key"><a href="#取得-API-Key" class="headerlink" title="取得 API Key"></a>取得 API Key</h3><p>怎樣註冊 MailChimp 我就不說了，Contact List 可以在 <a href="https://us1.admin.mailchimp.com/lists/" target="_blank" rel="noopener">Lists 頁面</a> 建立，API Key 可以在 <a href="https://us1.admin.mailchimp.com/account/api/?_ga=2.9473468.869612624.1541491750-866602565.1541491750j" target="_blank" rel="noopener">Account 頁面</a> 建立，詳情請看 <a href="https://mailchimp.com/help/about-api-keys/" target="_blank" rel="noopener">官方教學</a></p><h3 id="取得-data-center-位置和-API-root"><a href="#取得-data-center-位置和-API-root" class="headerlink" title="取得 data center 位置和 API root"></a>取得 data center 位置和 API root</h3><p>取得 API Key 之後我們首先要知道自己帳號的 <strong>data center 位置</strong>，登入 MailChimp 後看看 <strong>URL 的位置最前那段</strong>就是 data center</p><h4 id="以下例子的-lt-dc-gt-是-us18"><a href="#以下例子的-lt-dc-gt-是-us18" class="headerlink" title="以下例子的 &lt;dc&gt; 是 us18"></a>以下例子的 <code>&lt;dc&gt;</code> 是 <code>us18</code></h4><p><a href="https://us18.admin.mailchimp.com/" target="_blank" rel="noopener">https://us18.admin.mailchimp.com/</a></p><h4 id="所以-API-root-就是"><a href="#所以-API-root-就是" class="headerlink" title="所以 API root 就是"></a>所以 API root 就是</h4><p><a href="https://us18.api.mailchimp.com/3.0" target="_blank" rel="noopener">https://us18.api.mailchimp.com/3.0</a></p><h3 id="取得-List-ID"><a href="#取得-List-ID" class="headerlink" title="取得 List ID"></a>取得 List ID</h3><p>如果你還沒有 Contact List 請到 <a href="https://us1.admin.mailchimp.com/lists/" target="_blank" rel="noopener">這裡</a> 建立一張，然後我們可以用 API 取得 Contact List 的 ID，最簡單的方法是<strong>用 curl</strong></p><p></p><p class="code-caption" data-lang="sh" data-line_number="frontend" data-trim_indent="backend" data-label_position="outer" data-labels_left="Code" data-labels_right=":" data-labels_copy="Copy Code"><span class="code-caption-label"></span><a class="code-caption-copy">Copy Code</a></p><pre><code class="hljs sh">$ curl https://&lt;dc&gt;.api.mailchimp.com/3.0/lists --user <span class="hljs-string">'anystring:&lt;api-key&gt;'</span></code></pre><p></p><p>把 <code>&lt;dc&gt;</code> 和 <code>&lt;api-key&gt;</code> <strong>修改成你的設定</strong>，你會收到一串像這樣的 JSON，當中的 id 就是 List ID，先把它記著我們<strong>之後要用到</strong></p><p></p><p class="code-caption" data-lang="json" data-line_number="frontend" data-trim_indent="backend" data-label_position="outer" data-labels_left="Code" data-labels_right=":" data-labels_copy="Copy Code"><span class="code-caption-label"></span><a class="code-caption-copy">Copy Code</a></p><pre><code class="hljs json">&#123;
+  <span class="hljs-attr">"lists"</span>: [
+    &#123;
+      <span class="hljs-attr">"id"</span>: <span class="hljs-string">"12345abcde"</span>,
+      <span class="hljs-attr">"web_id"</span>: <span class="hljs-number">12345</span>,
+      <span class="hljs-attr">"name"</span>: <span class="hljs-string">"auphone.net"</span>,
+      ...
+    &#125;
+  ]
+&#125;</code></pre><p></p><h3 id="安裝-Node-js"><a href="#安裝-Node-js" class="headerlink" title="安裝 Node.js"></a>安裝 Node.js</h3><p>如果還沒有 Node.js，建議<strong>使用 nvm 安裝</strong></p><h4 id="Linux-MacOS-用戶"><a href="#Linux-MacOS-用戶" class="headerlink" title="Linux / MacOS 用戶"></a>Linux / MacOS 用戶</h4><p><a href="https://github.com/creationix/nvm" target="_blank" rel="noopener">https://github.com/creationix/nvm</a></p><h4 id="Windows-用戶"><a href="#Windows-用戶" class="headerlink" title="Windows 用戶"></a>Windows 用戶</h4><p><a href="https://github.com/coreybutler/nvm-windows" target="_blank" rel="noopener">https://github.com/coreybutler/nvm-windows</a></p><h2 id="Nodejs-伺服器原碼"><a href="#Nodejs-伺服器原碼" class="headerlink" title="Nodejs 伺服器原碼"></a>Nodejs 伺服器原碼</h2><p>先附上原碼，需要整個 project 可以到我的 Github 下載</p><p><a href="https://github.com/auphone/simple-mailchimp-api-server" target="_blank" rel="noopener">https://github.com/auphone/simple-mailchimp-api-server</a></p><h3 id="NPM-模組"><a href="#NPM-模組" class="headerlink" title="NPM 模組"></a>NPM 模組</h3><p></p><p class="code-caption" data-lang="sh" data-line_number="frontend" data-trim_indent="backend" data-label_position="outer" data-labels_left="Code" data-labels_right=":" data-labels_copy="Copy Code"><span class="code-caption-label"></span><a class="code-caption-copy">Copy Code</a></p><pre><code class="hljs sh">$ npm init
+$ npm install express cors body-parser request request-promise
+$ touch index.js</code></pre><p></p><h3 id="index-js-與設定"><a href="#index-js-與設定" class="headerlink" title="index.js 與設定"></a>index.js 與設定</h3><p>你需要把 index.js 內的 config 改成<strong>之前取得</strong>的 dc 位置和 api key</p><p></p><p class="code-caption" data-lang="js" data-line_number="frontend" data-trim_indent="backend" data-label_position="outer" data-labels_left="Code" data-labels_right=":" data-labels_copy="Copy Code"><span class="code-caption-label"></span><a class="code-caption-copy">Copy Code</a></p><pre><code class="hljs js"><span class="hljs-keyword">const</span> rp = <span class="hljs-built_in">require</span>(<span class="hljs-string">'request-promise'</span>);
+<span class="hljs-keyword">const</span> express = <span class="hljs-built_in">require</span>(<span class="hljs-string">'express'</span>);
+<span class="hljs-keyword">const</span> cors = <span class="hljs-built_in">require</span>(<span class="hljs-string">'cors'</span>);
+<span class="hljs-keyword">const</span> bodyParser = <span class="hljs-built_in">require</span>(<span class="hljs-string">'body-parser'</span>);
+
+<span class="hljs-comment">// Change to your MailChimp config</span>
+<span class="hljs-keyword">const</span> config = &#123;
+  dc: <span class="hljs-string">'&lt;dc&gt;'</span>,
+  apiKey: <span class="hljs-string">'&lt;your-api-key&gt;'</span>,
+  listId: <span class="hljs-string">'&lt;your-list-id&gt;'</span>
+&#125;;
+
+<span class="hljs-comment">// Express</span>
+<span class="hljs-keyword">const</span> app = express();
+app.use(cors());
+app.use(bodyParser.urlencoded(&#123; <span class="hljs-attr">extended</span>: <span class="hljs-literal">false</span> &#125;));
+app.use(bodyParser.json());
+
+<span class="hljs-comment">// API</span>
+app.post(<span class="hljs-string">'/subscribe'</span>, (req, res) =&gt; &#123;
+  <span class="hljs-keyword">const</span> &#123; email &#125; = req.body;
+  <span class="hljs-keyword">if</span> (!email) &#123;
+    <span class="hljs-keyword">return</span> res.status(<span class="hljs-number">422</span>).send(<span class="hljs-string">'Missing Parameter: email'</span>);
+  &#125;
+  rp(&#123;
+    method: <span class="hljs-string">'POST'</span>,
+    uri: <span class="hljs-string">`https://<span class="hljs-subst">$&#123;config.dc&#125;</span>.api.mailchimp.com/3.0/lists/<span class="hljs-subst">$&#123;</span></span>
+<span class="hljs-string"><span class="hljs-subst">      config.listId</span></span>
+<span class="hljs-string"><span class="hljs-subst">    &#125;</span>/members`</span>,
+    headers: &#123;
+      Authorization: <span class="hljs-string">`Basic <span class="hljs-subst">$&#123;<span class="hljs-keyword">new</span> Buffer(<span class="hljs-string">`anystring:<span class="hljs-subst">$&#123;config.apiKey&#125;</span>`</span>).toString(</span></span>
+<span class="hljs-string"><span class="hljs-subst">        <span class="hljs-string">'base64'</span></span></span>
+<span class="hljs-string"><span class="hljs-subst">      )&#125;</span>`</span>
+    &#125;,
+    body: &#123;
+      email_address: email,
+      status: <span class="hljs-string">'subscribed'</span>
+    &#125;,
+    json: <span class="hljs-literal">true</span>
+  &#125;)
+    .then(<span class="hljs-function"><span class="hljs-params">result</span> =&gt;</span> &#123;
+      res.send(<span class="hljs-string">'OK'</span>);
+    &#125;)
+    .catch(<span class="hljs-function"><span class="hljs-params">err</span> =&gt;</span> &#123;
+      res.status(<span class="hljs-number">400</span>).send(err);
+    &#125;);
+&#125;);
+
+app.listen(config.port || <span class="hljs-number">3000</span>, () =&gt; &#123;
+  <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'server started'</span>);
+&#125;);</code></pre><p></p><h3 id="運行伺服器"><a href="#運行伺服器" class="headerlink" title="運行伺服器"></a>運行伺服器</h3><p></p><p class="code-caption" data-lang="sh" data-line_number="frontend" data-trim_indent="backend" data-label_position="outer" data-labels_left="Code" data-labels_right=":" data-labels_copy="Copy Code"><span class="code-caption-label"></span><a class="code-caption-copy">Copy Code</a></p><pre><code class="hljs sh">$ node .</code></pre><p></p><h2 id="使用方法"><a href="#使用方法" class="headerlink" title="使用方法"></a>使用方法</h2><p>最簡單是使用 html + 純 js 做 HTTP 請求</p><h3 id="index-html"><a href="#index-html" class="headerlink" title="index.html"></a>index.html</h3><p></p><p class="code-caption" data-lang="html" data-line_number="frontend" data-trim_indent="backend" data-label_position="outer" data-labels_left="Code" data-labels_right=":" data-labels_copy="Copy Code"><span class="code-caption-label"></span><a class="code-caption-copy">Copy Code</a></p><pre><code class="hljs html"><span class="hljs-meta">&lt;!DOCTYPE <span class="hljs-meta-keyword">html</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">html</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">head</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">title</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">title</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">head</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">form</span> <span class="hljs-attr">onsubmit</span>=<span class="hljs-string">"subscribe()"</span>&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"sub-email"</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"email"</span> <span class="hljs-attr">required</span> /&gt;</span>
+      <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"submit"</span>&gt;</span>Subscribe<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">form</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">"./script.js"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">html</span>&gt;</span></code></pre><p></p><h3 id="script-js"><a href="#script-js" class="headerlink" title="script.js"></a>script.js</h3><p></p><p class="code-caption" data-lang="js" data-line_number="frontend" data-trim_indent="backend" data-label_position="outer" data-labels_left="Code" data-labels_right=":" data-labels_copy="Copy Code"><span class="code-caption-label"></span><a class="code-caption-copy">Copy Code</a></p><pre><code class="hljs js"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">subcribe</span>(<span class="hljs-params"></span>) </span>&#123;
+  <span class="hljs-keyword">const</span> email = <span class="hljs-built_in">document</span>.getElementById(<span class="hljs-string">'sub-email'</span>).value;
+  <span class="hljs-keyword">const</span> data = &#123;
+    method: <span class="hljs-string">'POST'</span>,
+    headers: &#123;
+      <span class="hljs-string">'Content-Type'</span>: <span class="hljs-string">'application/json; charset=utf-8'</span>
+    &#125;,
+    body: <span class="hljs-built_in">JSON</span>.stringify(&#123; email &#125;)
+  &#125;;
+  fetch(<span class="hljs-string">'http://localhost:3000/subscribe'</span>, data).then(<span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> &#123;
+    <span class="hljs-comment">// Do Something here</span>
+  &#125;);
+  <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+&#125;</code></pre><p></p><h2 id="資料補充"><a href="#資料補充" class="headerlink" title="資料補充"></a>資料補充</h2><h3 id="客戶端的請求"><a href="#客戶端的請求" class="headerlink" title="客戶端的請求"></a>客戶端的請求</h3><p>整個伺服器就只有<strong>一個 POST call</strong>，也沒有任何 Auth method，要怎樣使用請自行斟酌</p><p></p><p class="code-caption" data-lang="bash" data-line_number="frontend" data-trim_indent="backend" data-label_position="outer" data-labels_left="Code" data-labels_right=":" data-labels_copy="Copy Code"><span class="code-caption-label"></span><a class="code-caption-copy">Copy Code</a></p><pre><code class="hljs bash">http://localhost:3000/subscribe</code></pre><p></p><p>這裡我只接收 email 一個 parameter，實際上 MailChimp <strong>有更多的選項</strong></p><p></p><p class="code-caption" data-lang="json" data-line_number="frontend" data-trim_indent="backend" data-label_position="outer" data-labels_left="Code" data-labels_right=":" data-labels_copy="Copy Code"><span class="code-caption-label"></span><a class="code-caption-copy">Copy Code</a></p><pre><code class="hljs json">&#123;
+  <span class="hljs-attr">"email"</span>: <span class="hljs-string">"xxx@example.com"</span>
+&#125;</code></pre><p></p><h3 id="伺服器端請求"><a href="#伺服器端請求" class="headerlink" title="伺服器端請求"></a>伺服器端請求</h3><p>因為 <strong>CORS 的關係</strong>不能使用客戶端直接 API 請求，就算可以你也不想公開你的 API Key 吧？回正題，這個伺服器請求會只接<strong>把 Email 傳到 MailChimp</strong>，而且會自動變為<strong>已訂閱</strong>的狀態，如有需要請自行更改</p><p></p><p class="code-caption" data-lang="json" data-line_number="frontend" data-trim_indent="backend" data-label_position="outer" data-labels_left="Code" data-labels_right=":" data-labels_copy="Copy Code"><span class="code-caption-label"></span><a class="code-caption-copy">Copy Code</a></p><pre><code class="hljs json">&#123;
+  <span class="hljs-attr">"body"</span>: &#123;
+    <span class="hljs-attr">"email_address"</span>: <span class="hljs-string">"xxx@example.com"</span>,
+    <span class="hljs-attr">"status"</span>: <span class="hljs-string">"subscribed"</span>
+  &#125;
+&#125;</code></pre><p></p><h2 id="DEMO"><a href="#DEMO" class="headerlink" title="DEMO"></a>DEMO</h2><p>為何不訂閱我的網誌看看？(ゝ ∀･)b</p><p></p></article></div><button id="btnScrollTop" onclick="scrollToTop()"><i class="icon-up-big"></i></button></div></div><script src="/js/app.js"></script></body></html>

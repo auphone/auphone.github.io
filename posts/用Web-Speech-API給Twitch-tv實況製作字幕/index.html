@@ -1,0 +1,81 @@
+<html><head><title>用 Web Speech API 給 Twitch.tv 實況製作字幕&nbsp;-&nbsp;auphone.net</title><script async src="https://www.googletagmanager.com/gtag/js?id=UA-92978795-2"></script><script data-ad-client="ca-pub-1447883820552850" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script><script>function gtag(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],gtag("js",new Date),gtag("config","UA-92978795-2")</script><link rel="apple-touch-icon" sizes="57x57" href="/apple-icon-57x57.png"><link rel="apple-touch-icon" sizes="60x60" href="/apple-icon-60x60.png"><link rel="apple-touch-icon" sizes="72x72" href="/apple-icon-72x72.png"><link rel="apple-touch-icon" sizes="76x76" href="/apple-icon-76x76.png"><link rel="apple-touch-icon" sizes="114x114" href="/apple-icon-114x114.png"><link rel="apple-touch-icon" sizes="120x120" href="/apple-icon-120x120.png"><link rel="apple-touch-icon" sizes="144x144" href="/apple-icon-144x144.png"><link rel="apple-touch-icon" sizes="152x152" href="/apple-icon-152x152.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-icon-180x180.png"><link rel="icon" type="image/png" sizes="192x192" href="/android-icon-192x192.png"><link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png"><link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png"><link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="manifest" href="/manifest.json"><meta name="msapplication-TileColor" content="#ffffff"><meta name="msapplication-TileImage" content="/ms-icon-144x144.png"><meta name="theme-color" content="#ffffff"><meta charset="UTF8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="stylesheet" href="//fonts.googleapis.com/css?family=Noto+Sans+TC:400,700&display=swap.css"><link rel="stylesheet" href="/css/style.css"><meta name="generator" content="Hexo 4.2.1"></head><body id="site"><div class="sidebar-wrap"><div class="sidebar"><div class="info"><a class="greetings" href="/"><h1>嗨,</h1><h2>我是Auphone</h2></a><div class="bio">揼Code尋生活<br>寫App為生存<br>學而時習之，不亦說乎？</div><div class="highlight">Happy Coding &lt;3</div><div class="social"><a href="https://github.com/auphone" target="_new"><i class="icon-github-circled"></i></a><a href="https://twitter.com/auphonehk" target="_new"><i class="icon-twitter-bird"></i></a></div></div><footer><div class="container"><a class="copy-right-text" href="/">ヾ(*ΦωΦ)ツ<br>© 2022 auphone.net</a><div id="sub"><form id="sub-form" action="https://auphone.us18.list-manage.com/subscribe/post?u=1b175b7b8039f63120af59b14&amp;id=f727c66d2f" method="post" target="_blank"><input id="sub-email" type="email" name="EMAIL" placeholder="電郵地址" required><button id="sub-btn" type="submit">訂閱</button></form></div></div></footer></div></div><div class="wrap"><div class="content"><link rel="stylesheet" href="/css/post.css"><div id="post"><article><p class="date">19年02月20日</p><h1 class="title">用 Web Speech API 給 Twitch.tv 實況製作字幕</h1><p></p><p>小弟沒甚麼語言天份，基本上除了廣東話以外都聽得很吃力，所以就<strong>做了這個瀏覽器插件在看 Twitch.tv 即時加入字幕</strong></p><img src="/posts/%E7%94%A8Web-Speech-API%E7%B5%A6Twitch-tv%E5%AF%A6%E6%B3%81%E8%A3%BD%E4%BD%9C%E5%AD%97%E5%B9%95/twitch-subtitle.png" title="Twitch Real-time Subtitle"><h2 id="虛擬音效裝置-Virtual-Audio-Device"><a href="#虛擬音效裝置-Virtual-Audio-Device" class="headerlink" title="虛擬音效裝置 Virtual Audio Device"></a>虛擬音效裝置 Virtual Audio Device</h2><p>我會使用虛擬音效裝置<strong>把網頁的聲音輸出轉換成輸入裝置，把網頁的聲音變成麥克風輸入讓瀏覽器可以辨析得到</strong></p><img src="/posts/%E7%94%A8Web-Speech-API%E7%B5%A6Twitch-tv%E5%AF%A6%E6%B3%81%E8%A3%BD%E4%BD%9C%E5%AD%97%E5%B9%95/chrome-microphone.png" title="Chrome Microphone Popup"><p><strong>Windows 用家可以使用 <a href="https://www.vb-audio.com/Cable/" target="_blank" rel="noopener">vb-audio</a> 實現虛擬裝置</strong>，而 Linux 需要比較高的技術來去設定，我也是誤打誤撞才成功的，因為太麻煩了有機會再說吧</p><div class="splitter"><span><em>(:3 」∠ )</em></span></div><h2 id="免費的-Web-Speach-API"><a href="#免費的-Web-Speach-API" class="headerlink" title="免費的 Web Speach API"></a>免費的 Web Speach API</h2><p>做瀏覽器插件的好處是<strong>可以使用免費的 Web Speech API</strong>，而<strong>不用支付昂貴的 API 費用</strong>，例如 Google API，然而代價就是 API 的<strong>語音全部都會經過他們的伺服器</strong>，但又不是錄我的聲音所以沒關係吧</p><p>使用方法很簡單，只要幾句 code 就可以運行了</p><p></p><p class="code-caption" data-lang="js" data-line_number="frontend" data-trim_indent="backend" data-label_position="outer" data-labels_left="Code" data-labels_right=":" data-labels_copy="Copy Code"><span class="code-caption-label"></span><a class="code-caption-copy">Copy Code</a></p><pre><code class="hljs js"><span class="hljs-keyword">const</span> recognition = <span class="hljs-keyword">new</span> webkitSpeechRecognition();
+
+recognition.lang = <span class="hljs-string">'en-US'</span>;
+recognition.start();
+recognition.interimResults = <span class="hljs-literal">false</span>;
+
+recognition.onresult = <span class="hljs-function"><span class="hljs-params">event</span> =&gt;</span> &#123;
+  <span class="hljs-keyword">const</span> sentence = event.results[<span class="hljs-number">0</span>][<span class="hljs-number">0</span>].transcript;
+&#125;;</code></pre><p></p><p><code>interimResults</code> 預設是開啟的，效果是只要<strong>語音有小停頓也會即時回傳結果</strong>，像這樣</p><p></p><p class="code-caption" data-lang="" data-line_number="frontend" data-trim_indent="backend" data-label_position="outer" data-labels_left="Code" data-labels_right=":" data-labels_copy="Copy Code"><span class="code-caption-label"></span><a class="code-caption-copy">Copy Code</a></p><pre><code class="hljs plain">Response 1: I
+Response 2: I go to school
+Response 3: I go to school by bus</code></pre><p></p><p>如果把它關閉，API 會盡量在句子完結時再回傳，這樣<strong>回傳的速度會比較慢但相對可讀性也會提高</strong></p><h2 id="用-jQuery-插入字幕"><a href="#用-jQuery-插入字幕" class="headerlink" title="用 jQuery 插入字幕"></a>用 jQuery 插入字幕</h2><p>接收到句子後便可以即時把它插入到影片內，使用 jQuery 的原因只是為了方便，本地插件就不考慮效能問題了，這邊我要<strong>先取得目標網站的影片 <code>container</code></strong>，以 Twitch 為例就是 <code>.video-player__container</code>，<strong>然後在裡面插入 <code>&lt;div id=&quot;my-subtitle-container&quot;&gt;&lt;/div&gt;</code> 為字幕預留空間</strong></p><p></p><p class="code-caption" data-lang="js" data-line_number="frontend" data-trim_indent="backend" data-label_position="outer" data-labels_left="Code" data-labels_right=":" data-labels_copy="Copy Code"><span class="code-caption-label"></span><a class="code-caption-copy">Copy Code</a></p><pre><code class="hljs js"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getSubtitleContainer</span>(<span class="hljs-params"></span>) </span>&#123;
+  <span class="hljs-keyword">let</span> container = $(<span class="hljs-string">'#my-subtitle-container'</span>);
+  <span class="hljs-keyword">const</span> videoContainerEle = <span class="hljs-string">'.video-player__container'</span>; <span class="hljs-comment">// 這是 Twitch 的</span>
+  <span class="hljs-keyword">const</span> wrap = $(videoContainerEle);
+  <span class="hljs-keyword">if</span> (container.length === <span class="hljs-number">0</span>) &#123;
+    $(<span class="hljs-string">'.video-player__container'</span>).append(
+      <span class="hljs-string">'&lt;div id="my-subtitle-container"&gt;&lt;/div&gt;'</span>
+    );
+    container = $(videoContainerEle);
+  &#125;
+  <span class="hljs-keyword">return</span> container;
+&#125;</code></pre><p></p><p>從 API 接收到 event 的時候便更改 <code>container</code> 內的 html</p><p></p><p class="code-caption" data-lang="js" data-line_number="frontend" data-trim_indent="backend" data-label_position="outer" data-labels_left="Code" data-labels_right=":" data-labels_copy="Copy Code"><span class="code-caption-label"></span><a class="code-caption-copy">Copy Code</a></p><pre><code class="hljs js">recognition.onresult = <span class="hljs-function"><span class="hljs-params">event</span> =&gt;</span> &#123;
+  <span class="hljs-keyword">const</span> sentence = event.results[<span class="hljs-number">0</span>][<span class="hljs-number">0</span>].transcript;
+  $(<span class="hljs-string">'#my-subtitle-container'</span>).html(<span class="hljs-string">`&lt;p&gt;<span class="hljs-subst">$&#123;sentence&#125;</span>&lt;/p&gt;`</span>);
+&#125;;</code></pre><p></p><p>用簡單的 CSS 把字幕移到影片框架的底部正中</p><p></p><p class="code-caption" data-lang="css" data-line_number="frontend" data-trim_indent="backend" data-label_position="outer" data-labels_left="Code" data-labels_right=":" data-labels_copy="Copy Code"><span class="code-caption-label"></span><a class="code-caption-copy">Copy Code</a></p><pre><code class="hljs css"><span class="hljs-selector-id">#my-subtitle-container</span> &#123;
+  <span class="hljs-attribute">position</span>: absolute;
+  <span class="hljs-attribute">bottom</span>: <span class="hljs-number">5%</span>;
+  <span class="hljs-attribute">width</span>: <span class="hljs-number">100%</span>;
+  <span class="hljs-attribute">text-align</span>: center;
+&#125;
+
+<span class="hljs-selector-id">#my-subtitle-container</span> <span class="hljs-selector-tag">p</span> &#123;
+  <span class="hljs-attribute">display</span>: inline-block;
+  <span class="hljs-attribute">margin</span>: <span class="hljs-number">0</span> auto <span class="hljs-number">2px</span> auto;
+  <span class="hljs-attribute">font-family</span>: <span class="hljs-string">'微軟正黑體'</span>;
+  <span class="hljs-attribute">color</span>: <span class="hljs-number">#000</span>;
+  <span class="hljs-attribute">font-weight</span>: bold;
+  <span class="hljs-attribute">background</span>: <span class="hljs-built_in">rgba</span>(<span class="hljs-number">255</span>, <span class="hljs-number">255</span>, <span class="hljs-number">255</span>, <span class="hljs-number">0.8</span>);
+  <span class="hljs-attribute">padding-left</span>: <span class="hljs-number">5px</span>;
+  <span class="hljs-attribute">padding-right</span>: <span class="hljs-number">5px</span>;
+&#125;</code></pre><p></p><h2 id="翻譯伺服器"><a href="#翻譯伺服器" class="headerlink" title="翻譯伺服器"></a>翻譯伺服器</h2><p><strong>中文以外的語音我會先進行翻譯再顯示，所以我們需要一個翻譯伺服器</strong>，在接收到句子時先進行翻譯，伺服器詳情可參考<a href="http://localhost:5000/posts/%E8%87%AA%E8%A3%BD%E3%80%8CChrome-%E7%89%88-Word-Wise%E3%80%8D%E6%99%BA%E8%83%BD%E7%BF%BB%E8%AD%AF%E8%8B%B1%E6%96%87%E7%94%9F%E5%AD%97/" target="_blank" rel="noopener">自製「Chrome 版 Word Wise」智能翻譯英文生字</a>，至於中文的直接顯示出來就好了</p><h2 id="提升字幕可讀性"><a href="#提升字幕可讀性" class="headerlink" title="提升字幕可讀性"></a>提升字幕可讀性</h2><p>因為我設定了 API 只會在句末的時候才回傳，所以<strong>字幕顯示延遲是一定有的，而且很容易被下一句字幕覆蓋掉</strong>，所以我做了一個<strong>堆疊字幕的效果，讓字幕能夠在屏幕逗留 5 秒鐘</strong></p><p></p><p class="code-caption" data-lang="js" data-line_number="frontend" data-trim_indent="backend" data-label_position="outer" data-labels_left="Code" data-labels_right=":" data-labels_copy="Copy Code"><span class="code-caption-label"></span><a class="code-caption-copy">Copy Code</a></p><pre><code class="hljs js"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">SubTitle</span> </span>&#123;
+  timestamp: Moment;
+  text: string;
+
+  <span class="hljs-keyword">constructor</span>(text: string) &#123;
+    <span class="hljs-keyword">this</span>.text = text;
+    <span class="hljs-keyword">this</span>.timestamp = moment();
+  &#125;
+&#125;
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">render</span>(<span class="hljs-params"></span>) </span>&#123;
+  <span class="hljs-keyword">const</span> expired = subtitles.find(<span class="hljs-function"><span class="hljs-params">subtitle</span> =&gt;</span>
+    subtitle.timestamp.isBefore(moment().add(<span class="hljs-number">-5</span>, <span class="hljs-string">'seconds'</span>))
+  );
+  <span class="hljs-keyword">if</span> (expired) &#123;
+    subtitles.shift();
+  &#125;
+  $(<span class="hljs-string">'#my-subtitle-container'</span>).html(
+    subtitles.map(<span class="hljs-function"><span class="hljs-params">subtitle</span> =&gt;</span> <span class="hljs-string">`<span class="hljs-subst">$&#123;subtitle.text&#125;</span>&lt;br/&gt;`</span>).join()
+  );
+&#125;
+
+<span class="hljs-keyword">const</span> subtitles = [];
+
+recognition.onresult = <span class="hljs-function"><span class="hljs-params">event</span> =&gt;</span> &#123;
+  <span class="hljs-keyword">const</span> sentence = event.results[<span class="hljs-number">0</span>][<span class="hljs-number">0</span>].transcript;
+  subtitles.push(<span class="hljs-keyword">new</span> SubTitle(sentence));
+  render();
+&#125;;
+
+setInterval(<span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> &#123;
+  render();
+&#125;, <span class="hljs-number">1000</span>);</code></pre><p></p><h2 id="防止-API-中斷"><a href="#防止-API-中斷" class="headerlink" title="防止 API 中斷"></a>防止 API 中斷</h2><p>這個 API 有一個很奇怪的特性，在 API <strong>回傳之後有一定機率會停止 <code>recognition</code></strong>，或許是我用的方法錯了，但我發現<strong>每次回傳後再 <code>start()</code> 一次基本上就不會再斷</strong>，所以就沒有考究了</p><p></p><p class="code-caption" data-lang="js" data-line_number="frontend" data-trim_indent="backend" data-label_position="outer" data-labels_left="Code" data-labels_right=":" data-labels_copy="Copy Code"><span class="code-caption-label"></span><a class="code-caption-copy">Copy Code</a></p><pre><code class="hljs js">recognition.onresult = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">event</span>) </span>&#123;
+  <span class="hljs-keyword">const</span> sentence = event.results[<span class="hljs-number">0</span>][<span class="hljs-number">0</span>].transcript;
+  setTimeout(<span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> &#123;
+    <span class="hljs-keyword">try</span> &#123;
+      recognition.start();
+    &#125; <span class="hljs-keyword">catch</span> (err) &#123;&#125;
+  &#125;);
+  ...
+&#125;</code></pre><p></p><div class="splitter"><span>(ﾟ3ﾟ)～♪</span></div><h2 id="相關文章"><a href="#相關文章" class="headerlink" title="相關文章"></a>相關文章</h2><ul><li><a href="/posts/用「字頻數據」分析英文生字的難易度">用「字頻數據」分析英文生字的難易度</a></li><li><a href="/posts/自製「Chrome-版-Word-Wise」智能翻譯英文生字">自製「Chrome 版 Word Wise」智能翻譯英文生字</a></li></ul><p></p></article></div><button id="btnScrollTop" onclick="scrollToTop()"><i class="icon-up-big"></i></button></div></div><script src="/js/app.js"></script></body></html>

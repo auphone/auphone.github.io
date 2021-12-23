@@ -1,0 +1,127 @@
+<html><head><title>解決網頁中文字型的缺字問題&nbsp;-&nbsp;auphone.net</title><script async src="https://www.googletagmanager.com/gtag/js?id=UA-92978795-2"></script><script data-ad-client="ca-pub-1447883820552850" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script><script>function gtag(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],gtag("js",new Date),gtag("config","UA-92978795-2")</script><link rel="apple-touch-icon" sizes="57x57" href="/apple-icon-57x57.png"><link rel="apple-touch-icon" sizes="60x60" href="/apple-icon-60x60.png"><link rel="apple-touch-icon" sizes="72x72" href="/apple-icon-72x72.png"><link rel="apple-touch-icon" sizes="76x76" href="/apple-icon-76x76.png"><link rel="apple-touch-icon" sizes="114x114" href="/apple-icon-114x114.png"><link rel="apple-touch-icon" sizes="120x120" href="/apple-icon-120x120.png"><link rel="apple-touch-icon" sizes="144x144" href="/apple-icon-144x144.png"><link rel="apple-touch-icon" sizes="152x152" href="/apple-icon-152x152.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-icon-180x180.png"><link rel="icon" type="image/png" sizes="192x192" href="/android-icon-192x192.png"><link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png"><link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png"><link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="manifest" href="/manifest.json"><meta name="msapplication-TileColor" content="#ffffff"><meta name="msapplication-TileImage" content="/ms-icon-144x144.png"><meta name="theme-color" content="#ffffff"><meta charset="UTF8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="stylesheet" href="//fonts.googleapis.com/css?family=Noto+Sans+TC:400,700&display=swap.css"><link rel="stylesheet" href="/css/style.css"><meta name="generator" content="Hexo 4.2.1"></head><body id="site"><div class="sidebar-wrap"><div class="sidebar"><div class="info"><a class="greetings" href="/"><h1>嗨,</h1><h2>我是Auphone</h2></a><div class="bio">揼Code尋生活<br>寫App為生存<br>學而時習之，不亦說乎？</div><div class="highlight">Happy Coding &lt;3</div><div class="social"><a href="https://github.com/auphone" target="_new"><i class="icon-github-circled"></i></a><a href="https://twitter.com/auphonehk" target="_new"><i class="icon-twitter-bird"></i></a></div></div><footer><div class="container"><a class="copy-right-text" href="/">ヾ(*ΦωΦ)ツ<br>© 2022 auphone.net</a><div id="sub"><form id="sub-form" action="https://auphone.us18.list-manage.com/subscribe/post?u=1b175b7b8039f63120af59b14&amp;id=f727c66d2f" method="post" target="_blank"><input id="sub-email" type="email" name="EMAIL" placeholder="電郵地址" required><button id="sub-btn" type="submit">訂閱</button></form></div></div></footer></div></div><div class="wrap"><div class="content"><link rel="stylesheet" href="/css/post.css"><div id="post"><article><p class="date">19年10月30日</p><h1 class="title">解決網頁中文字型的缺字問題</h1><p><img src="/posts/%E8%A7%A3%E6%B1%BA%E7%B6%B2%E9%A0%81%E4%B8%AD%E6%96%87%E5%AD%97%E5%9E%8B%E7%9A%84%E7%BC%BA%E5%AD%97%E5%95%8F%E9%A1%8C/missing-chinese-font-cover.png" title="Missing Chinese Font Cover"></p><p>最近有個項目需要在網頁使用一些手寫風格的中文字型，眾所周知<strong>這些字型的缺字問題是非常嚴重的</strong>，在正常情況下系統會自動補字，但我發現<strong>在網頁上很多缺字都會直接變成空白</strong>，以下就來看看我解決的方法</p><div class="splitter"><span>(^y^)</span></div><h2 id="找出沒有補字的原因"><a href="#找出沒有補字的原因" class="headerlink" title="找出沒有補字的原因"></a>找出沒有補字的原因</h2><p>如果沒興趣可以跳過這個部份</p><h3 id="下載並找出-Setofont-的缺字"><a href="#下載並找出-Setofont-的缺字" class="headerlink" title="下載並找出 Setofont 的缺字"></a>下載並找出 Setofont 的缺字</h3><p>首先下載<a href="http://setofont.osdn.jp" target="_blank" rel="noopener">瀨戶字體 Seto font</a>，<strong>取得一個 <code>.ttf</code> 檔</strong>，這裡我把它命名為 <code>setofont.ttf</code>，然後<strong>建立一個簡單的 <code>html</code> 網頁測試字體</strong></p><p></p><p class="code-caption" data-lang="" data-line_number="frontend" data-trim_indent="backend" data-label_position="outer" data-labels_left="Code" data-labels_right=":" data-labels_copy="Copy Code"><span class="code-caption-label"></span><a class="code-caption-copy">Copy Code</a></p><pre><code class="hljs plain">&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+  &lt;title&gt;&lt;&#x2F;title&gt;
+  &lt;style type&#x3D;&quot;text&#x2F;css&quot;&gt;
+    @font-face &#123;
+      font-family: setofont;
+      src: url(setofont.ttf);
+    &#125;
+    strong &#123;
+      font-family: setofont, &quot;微軟正黑體&quot;, &quot;華文黑體&quot;, serif;
+    &#125;
+  &lt;&#x2F;style&gt;
+&lt;&#x2F;head&gt;
+&lt;body&gt;
+  &lt;p&gt;白川鄉旅行&lt;&#x2F;p&gt;
+  &lt;p&gt;&lt;strong&gt;白川鄉旅行&lt;&#x2F;strong&gt;&lt;&#x2F;p&gt;
+&lt;&#x2F;body&gt;
+&lt;&#x2F;html&gt;</code></pre><p></p><p>在網頁打開 <code>html</code> 可以看到 <code>setofont</code> 的<strong>「鄉」字變成空白了</strong>，就算是使用了 Windows 的「微軟正黑體」和 MacOS 的「華文黑體」作為 fallback 也沒辦法成功補字</p><img src="/posts/%E8%A7%A3%E6%B1%BA%E7%B6%B2%E9%A0%81%E4%B8%AD%E6%96%87%E5%AD%97%E5%9E%8B%E7%9A%84%E7%BC%BA%E5%AD%97%E5%95%8F%E9%A1%8C/missing-chinese-font.png" title="Missing Chinese Font"><h3 id="用-FontForge-找出問題所在"><a href="#用-FontForge-找出問題所在" class="headerlink" title="用 FontForge 找出問題所在"></a>用 FontForge 找出問題所在</h3><p>為了找出問題所在，我們<strong>需要使用一些工具檢視字體</strong>，所以這邊我們下載一個叫 <a href="https://fontforge.org/" target="_blank" rel="noopener">FontForge</a> 的多功能字型編輯軟件，下載好後打開並選擇剛下載的 <code>setofont.ttf</code>，會看到這些很生動的手寫字體 :3</p><img src="/posts/%E8%A7%A3%E6%B1%BA%E7%B6%B2%E9%A0%81%E4%B8%AD%E6%96%87%E5%AD%97%E5%9E%8B%E7%9A%84%E7%BC%BA%E5%AD%97%E5%95%8F%E9%A1%8C/font-forge-1.png" title="Font Forge"><p>然後在選單中找到 <strong>View &gt; Goto</strong>，因為我們知道「鄉」是其中一個缺字，所以就<strong>直接搜尋「鄉」</strong></p><img src="/posts/%E8%A7%A3%E6%B1%BA%E7%B6%B2%E9%A0%81%E4%B8%AD%E6%96%87%E5%AD%97%E5%9E%8B%E7%9A%84%E7%BC%BA%E5%AD%97%E5%95%8F%E9%A1%8C/font-forge-2.png" title="Font Forge Goto Search"> <img src="/posts/%E8%A7%A3%E6%B1%BA%E7%B6%B2%E9%A0%81%E4%B8%AD%E6%96%87%E5%AD%97%E5%9E%8B%E7%9A%84%E7%BC%BA%E5%AD%97%E5%95%8F%E9%A1%8C/font-forge-3.png" title="Font Forge Search Result"><p>搜尋後發現<strong>「鄉」在這個字體中真的是空白一片</strong>，以我的理解是因為這字體把「鄉」字用空白填滿了，所以<strong>就算在我們眼中它是一個缺字，但系統也不這樣認為</strong>，至少 CSS 是這樣，所以接下來我們<strong>嘗試把「鄉」從字型中刪掉</strong>，在下面的空格地方右鍵然後選擇 Clear</p><img src="/posts/%E8%A7%A3%E6%B1%BA%E7%B6%B2%E9%A0%81%E4%B8%AD%E6%96%87%E5%AD%97%E5%9E%8B%E7%9A%84%E7%BC%BA%E5%AD%97%E5%95%8F%E9%A1%8C/font-forge-4.png" title="Font Forge Clear"> <img src="/posts/%E8%A7%A3%E6%B1%BA%E7%B6%B2%E9%A0%81%E4%B8%AD%E6%96%87%E5%AD%97%E5%9E%8B%E7%9A%84%E7%BC%BA%E5%AD%97%E5%95%8F%E9%A1%8C/font-forge-5.png" title="Font Forge Clear Result"><p>刪除後我們發現空格變成一個叉包了，之後在選單中選擇 <strong>File &gt; Generate Fonts</strong> 儲存字型後我們<strong>再測試一次字體，這次「鄉」字有成功補上</strong></p><img src="/posts/%E8%A7%A3%E6%B1%BA%E7%B6%B2%E9%A0%81%E4%B8%AD%E6%96%87%E5%AD%97%E5%9E%8B%E7%9A%84%E7%BC%BA%E5%AD%97%E5%95%8F%E9%A1%8C/missing-chinese-font-fix.png" title="Missing Chinese Auto-fill"><h2 id="移除所有空白字"><a href="#移除所有空白字" class="headerlink" title="移除所有空白字"></a>移除所有空白字</h2><p>為了讓系統把字補上，我的解決方法是<strong>把所有空白的字都刪除掉</strong>，所以我就寫了一個簡單的 Node.js 腳本</p><h3 id="事前準備"><a href="#事前準備" class="headerlink" title="事前準備"></a>事前準備</h3><p>我們需要以下工具</p><ul><li>Python 3</li><li>Pip</li><li>fonttools</li><li>示範用的<a href="http://setofont.osdn.jp" target="_blank" rel="noopener">瀨戶字體 Seto font</a></li><li>Node.js</li><li>8GB 記憶體</li></ul><h2 id="安裝-pip-和-fonttools"><a href="#安裝-pip-和-fonttools" class="headerlink" title="安裝 pip 和 fonttools"></a>安裝 <code>pip</code> 和 <code>fonttools</code></h2><p>先安裝 python 然後用以下指令安裝 pip</p><p></p><p class="code-caption" data-lang="" data-line_number="frontend" data-trim_indent="backend" data-label_position="outer" data-labels_left="Code" data-labels_right=":" data-labels_copy="Copy Code"><span class="code-caption-label"></span><a class="code-caption-copy">Copy Code</a></p><pre><code class="hljs plain">curl https:&#x2F;&#x2F;bootstrap.pypa.io&#x2F;get-pip.py -o get-pip.py
+python get-pip.py</code></pre><p></p><p>接著安裝 fonttools</p><p></p><p class="code-caption" data-lang="" data-line_number="frontend" data-trim_indent="backend" data-label_position="outer" data-labels_left="Code" data-labels_right=":" data-labels_copy="Copy Code"><span class="code-caption-label"></span><a class="code-caption-copy">Copy Code</a></p><pre><code class="hljs plain">pip install fonttools</code></pre><p></p><h3 id="用-fonttools-把-ttf-變成-xml"><a href="#用-fonttools-把-ttf-變成-xml" class="headerlink" title="用 fonttools 把 .ttf 變成 xml"></a>用 fonttools 把 <code>.ttf</code> 變成 xml</h3><p>如果你還沒有下載<a href="http://setofont.osdn.jp" target="_blank" rel="noopener">瀨戶字體 Seto font</a>，先下載好然後再<strong>用 <code>fonttools</code> 指令</strong>取得 <code>setofont.ttx</code>，<code>.ttx</code> 是 <code>fonttools</code> 的格式，實際上就是一個 <code>xml</code> 檔，其他字型檔論理上也可以用 <code>fonttools</code> 拆解成 <code>xml</code>，<strong>我們將會取得一個接近 <code>100MB</code> 的 <code>.ttx</code> 檔…</strong></p><p></p><p class="code-caption" data-lang="" data-line_number="frontend" data-trim_indent="backend" data-label_position="outer" data-labels_left="Code" data-labels_right=":" data-labels_copy="Copy Code"><span class="code-caption-label"></span><a class="code-caption-copy">Copy Code</a></p><pre><code class="hljs plain">ttx .&#x2F;setofont.ttf</code></pre><p></p><h2 id="使用-Node-js-腳本把空白的字刪除"><a href="#使用-Node-js-腳本把空白的字刪除" class="headerlink" title="使用 Node.js 腳本把空白的字刪除"></a>使用 Node.js 腳本把空白的字刪除</h2><p>由於檔案太大，在沒有做 optimize 的情況下我們<strong>需要 8GB 的記憶體才能夠運行</strong>，在同一目錄下建立 <code>index.js</code> 檔案，複製下面的原碼然後執行以下指令</p><p></p><p class="code-caption" data-lang="" data-line_number="frontend" data-trim_indent="backend" data-label_position="outer" data-labels_left="Code" data-labels_right=":" data-labels_copy="Copy Code"><span class="code-caption-label"></span><a class="code-caption-copy">Copy Code</a></p><pre><code class="hljs plain">npm init -y
+npm i node-expat xmlbuilder
+node --max-old-space-size&#x3D;8192 index.js</code></pre><p></p><p>這是 <code>index.js</code></p><p></p><p class="code-caption" data-lang="" data-line_number="frontend" data-trim_indent="backend" data-label_position="outer" data-labels_left="Code" data-labels_right=":" data-labels_copy="Copy Code"><span class="code-caption-label"></span><a class="code-caption-copy">Copy Code</a></p><pre><code class="hljs plain">const fs &#x3D; require(&#39;fs&#39;);
+const expat &#x3D; require(&#39;node-expat&#39;);
+const builder &#x3D; require(&#39;xmlbuilder&#39;);
+
+&#x2F;&#x2F; Change the source and dest file here
+const src &#x3D; fs.readFileSync(&#39;.&#x2F;setofont.ttx&#39;);
+const destFileName &#x3D; &#39;out.ttx&#39;;
+
+&#x2F;&#x2F; Entry point
+(async () &#x3D;&gt; &#123;
+  const filterList &#x3D; await scan();
+  console.log(&#96;Char to filter: $&#123;filterList.length&#125;&#96;);
+  const xml &#x3D; await parseXml(filterList);
+&#125;)();
+
+function scan() &#123;
+  return new Promise((rs, rj) &#x3D;&gt; &#123;
+    let firstEle;
+    const filterList &#x3D; [];
+    const parser &#x3D; new expat.Parser(&#39;UTF-8&#39;);
+    parser.on(&#39;startElement&#39;, function(name, attrs) &#123;
+      if (!firstEle) &#123;
+        firstEle &#x3D; name;
+      &#125;
+      if (name &#x3D;&#x3D;&#x3D; &#39;TTGlyph&#39; &amp;&amp; attrs.yMin &#x3D;&#x3D;&#x3D; undefined) &#123;
+        filterList.push(attrs.name);
+      &#125;
+    &#125;);
+
+    parser.on(&#39;endElement&#39;, function(name) &#123;
+      if (firstEle &#x3D;&#x3D;&#x3D; name) &#123;
+        rs(filterList);
+      &#125;
+    &#125;);
+
+    parser.on(&#39;error&#39;, function(error) &#123;
+      console.error(error);
+      return rj(error);
+    &#125;);
+
+    parser.write(src);
+  &#125;);
+&#125;
+
+function parseXml(filterList) &#123;
+  return new Promise((rs, rj) &#x3D;&gt; &#123;
+    const parser &#x3D; new expat.Parser(&#39;UTF-8&#39;);
+    let firstEle;
+    let root;
+    let levels &#x3D; [];
+    let skip &#x3D; false;
+    let skipEleName;
+
+    parser.on(&#39;startElement&#39;, function(name, attrs) &#123;
+      if (!root) &#123;
+        firstEle &#x3D; name;
+        root &#x3D; builder.create(name);
+        Object.keys(attrs).forEach(key &#x3D;&gt; &#123;
+          root.att(key, attrs[key]);
+        &#125;);
+        levels.push(root);
+      &#125; else if (!skip) &#123;
+        &#x2F;&#x2F; Skip
+        if (
+          filterList.includes(attrs.name) ||
+          filterList.includes(attrs.glyph) ||
+          filterList.includes(attrs.in)
+        ) &#123;
+          skip &#x3D; true;
+          skipEleName &#x3D; name;
+        &#125; else &#123;
+          const ele &#x3D; levels[levels.length - 1].ele(name, attrs);
+          levels.push(ele);
+        &#125;
+      &#125;
+    &#125;);
+
+    parser.on(&#39;endElement&#39;, function(name) &#123;
+      if (firstEle &#x3D;&#x3D;&#x3D; name) &#123;
+        &#x2F;&#x2F; End
+        const xml &#x3D; root.end(&#123; pretty: false &#125;);
+        fs.writeFileSync(destFileName, xml);
+      &#125; else &#123;
+        if (skip) &#123;
+          if (skipEleName &#x3D;&#x3D;&#x3D; name) &#123;
+            skip &#x3D; false;
+          &#125;
+        &#125; else &#123;
+          levels.pop();
+        &#125;
+      &#125;
+    &#125;);
+
+    parser.on(&#39;text&#39;, function(text) &#123;
+      if (!skip) &#123;
+        levels[levels.length - 1].text(text);
+      &#125;
+    &#125;);
+
+    parser.on(&#39;error&#39;, function(error) &#123;
+      console.error(error);
+    &#125;);
+
+    parser.write(src);
+  &#125;);
+&#125;</code></pre><p></p><div class="splitter"><span>漫長的等待 <em>(¦3」∠)</em></span></div><p>運行後如無意外會<strong>產生 <code>out.ttx</code>，大小會比原來的 <code>.ttx</code> 檔小</strong>，因為我們把沒用的 <code>xml tag</code> 刪掉了，接下來<strong>再次使用 <code>fonttools</code> 指令把 <code>ttx</code> 還原成 <code>ttf</code> 檔</strong></p><p></p><p class="code-caption" data-lang="" data-line_number="frontend" data-trim_indent="backend" data-label_position="outer" data-labels_left="Code" data-labels_right=":" data-labels_copy="Copy Code"><span class="code-caption-label"></span><a class="code-caption-copy">Copy Code</a></p><pre><code class="hljs plain">ttx .&#x2F;out.ttx</code></pre><p></p><p>最後我們就可以得到<strong>不會出現缺字變成空白的 <code>out.ttf</code> 了﹗</strong></p><p></p></article></div><button id="btnScrollTop" onclick="scrollToTop()"><i class="icon-up-big"></i></button></div></div><script src="/js/app.js"></script></body></html>
